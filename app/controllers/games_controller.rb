@@ -13,6 +13,7 @@ class GamesController < ApplicationController
   def score
     @attempt = params[:word]
     @letters = params[:letters]
+    session[:score] = 0 if session[:score].nil?
     if @attempt.upcase!.split('').all? { |l| @attempt.count(l) <= @letters.count(l) } == false
       @answer = "Sorry but #{@attempt} can't be made from #{@letters}"
     elsif
@@ -20,6 +21,7 @@ class GamesController < ApplicationController
       @answer = "#{@attempt} is not a word"
     else
       @answer = "Congrats #{@attempt} is a word!"
+      session[:score] += @attempt.length
     end
   end
 end
